@@ -57,11 +57,14 @@ function App() {
       </div>
       <div className="info my-12">
         <p>
-        Quickly dive into a personalized sound environment with Binaural Beats Buddy, leveraging the subtle science of binaural beats. By emitting two slightly different low-frequency tones, one to each ear, your brain perceives a consistent tone—the binaural beat. While the base frequency can be adjusted to your auditory preference up to 800 Hz, it's the beat frequency, ranging from 1 Hz to 50 Hz, that's crucial for steering your brain into your desired mental state.
+        Binaural Beats Buddy offers a unique auditory journey, where a simple adjustment of frequencies can lead to profound changes in mental states. While the base frequency is a matter of personal taste and has no specific psychological effect, the beat frequency is the key to unlocking different brainwave patterns. Here's how it works in more relatable terms:
+        </p>
+        <p>
+        Your brain operates at various frequencies depending on what you're doing or feeling. These frequencies are like the rhythm of your brain's activity. When you listen to a binaural beat at a specific frequency, your brain tends to match or "sync" its own rhythm with that frequency, a phenomenon known as 'brainwave entrainment'.
         </p>
 
         <p>
-        The beat frequency should be selected based on the cognitive or relaxation state you aim to achieve:
+        Each beat frequency range is like a tuning dial for your mood and mental state:
         </p>
 
         <ol>
