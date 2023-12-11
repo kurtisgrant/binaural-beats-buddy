@@ -17,6 +17,10 @@
   @apply my-3
 }
 
+.slider-with-buttons button {
+  @apply bg-slate-700 hover:bg-slate-600 p-4 rounded-lg
+}
+
 /* Custom Slider Styles */
 .slider::-webkit-slider-thumb {
   @apply w-4 h-8 bg-blue-500 rounded-full border border-blue-400 shadow appearance-none cursor-pointer;

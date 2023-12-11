@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAudioContext } from "./hooks/useAudioContext";
 import { useOscillator } from "./hooks/useOscillator";
+import SliderWithButtons from "./components/sliderWithButtons";
 import "./App.css";
 
 function App() {
@@ -8,7 +9,7 @@ function App() {
   const [beat, setBeat] = useState(30);
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const {audioCtxRef, getAudioContext} = useAudioContext();
+  const { audioCtxRef, getAudioContext } = useAudioContext();
   useOscillator(getAudioContext, isPlaying, base, beat);
 
   const handlePlayPause = () => {
@@ -24,40 +25,30 @@ function App() {
     <>
       <h1 className="text-5xl m-5 font-bold">Binaural Beats Buddy</h1>
       <button
-        className="mx-auto p-5 my-8 rounded-full bg-blue-500 text-white text-2xl font-bold"
+        className="mx-auto p-5 my-8 rounded-full bg-blue-500 hover:bg-blue-400 text-white text-2xl font-bold"
         onClick={handlePlayPause}
       >
         {isPlaying ? "Pause" : "Play"}
       </button>
       <div className="pt-5">
-        <div>
-          <label htmlFor="base">Base: {base} Hz</label>
-          <br />
-          <input
-            type="range"
-            id="base"
-            name="base"
-            min="50"
-            max="800"
-            value={base}
-            onChange={(e) => setBase(Number(e.target.value))}
-            className="slider p-7 m-4 w-64 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
-          />
-        </div>
-        <div>
-          <label htmlFor="beat">Beat: {beat} Hz</label>{' (' + getToneType(beat) + ')'}
-          <br />
-          <input
-            type="range"
-            id="beat"
-            name="beat"
-            min="0"
-            max="50"
-            value={beat}
-            onChange={(e) => setBeat(Number(e.target.value))}
-            className="slider p-7 m-4 w-64 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
-          />
-        </div>
+        <SliderWithButtons
+          name="base"
+          value={base}
+          setValue={setBase}
+          labeller={baseLabeller}
+          min={50}
+          max={800}
+          buttonInc={5}
+        />
+        <SliderWithButtons
+          name="beat"
+          value={beat}
+          setValue={setBeat}
+          labeller={beatLabeller}
+          min={0}
+          max={50}
+          buttonInc={1}
+        />
       </div>
       <div>
         <small>
@@ -88,39 +79,43 @@ function App() {
         <ol>
           <li>
             <b>Delta (1-4 Hz)</b>
-            <br />These frequencies are associated with deep sleep and
-            are said to aid in healing and regeneration. They are often used in
-            meditation and relaxation techniques to promote deep sleep.
+            <br />
+            These frequencies are associated with deep sleep and are said to aid
+            in healing and regeneration. They are often used in meditation and
+            relaxation techniques to promote deep sleep.
           </li>
 
           <li>
             <b>Theta (4-8 Hz)</b>
-            <br />Linked with REM sleep, deep meditation, and
-            creativity, theta beats are used to encourage relaxation and
-            creativity. They are also associated with memory, learning, and
-            intuition.
+            <br />
+            Linked with REM sleep, deep meditation, and creativity, theta beats
+            are used to encourage relaxation and creativity. They are also
+            associated with memory, learning, and intuition.
           </li>
 
           <li>
             <b>Alpha (8-14 Hz)</b>
-            <br />These frequencies are thought to promote relaxation
-            while awake, such as during meditation and light hypnosis. They are
-            also associated with pre-sleep and pre-wake drowsiness.
+            <br />
+            These frequencies are thought to promote relaxation while awake,
+            such as during meditation and light hypnosis. They are also
+            associated with pre-sleep and pre-wake drowsiness.
           </li>
 
           <li>
             <b>Beta (14-30 Hz)</b>
-            <br />Associated with normal waking consciousness and a
-            heightened state of alertness, logic, and critical reasoning. These
-            are often used for active concentration or problem-solving tasks.
+            <br />
+            Associated with normal waking consciousness and a heightened state
+            of alertness, logic, and critical reasoning. These are often used
+            for active concentration or problem-solving tasks.
           </li>
 
           <li>
             <b>Gamma (30-50 Hz)</b>
-            <br />These are the fastest binaural beats and are
-            associated with peak concentration and high levels of cognitive
-            functioning. Neuroscientists believe they are involved in higher
-            mental activity, including perception and consciousness.
+            <br />
+            These are the fastest binaural beats and are associated with peak
+            concentration and high levels of cognitive functioning.
+            Neuroscientists believe they are involved in higher mental activity,
+            including perception and consciousness.
           </li>
         </ol>
 
@@ -140,6 +135,21 @@ function App() {
 
 export default App;
 
+function baseLabeller(name: string, value: number) {
+  return `${capitalize(name)}: ${value} Hz`;
+}
+
+function beatLabeller(name: string, value: number) {
+  return `${capitalize(name)}: ${value} Hz (${getToneType(value)})`;
+}
+
+function capitalize(word: string) {
+  if (word && typeof word === "string") {
+    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+  }
+  return word;
+}
+
 function getToneType(hz: number) {
   if (hz >= 30 && hz <= 50) {
     return "Gamma";
@@ -152,7 +162,7 @@ function getToneType(hz: number) {
   } else if (hz >= 1 && hz <= 4) {
     return "Delta";
   } else if (hz <= 0) {
-    return "Not Binaural"
+    return "Not Binaural";
   } else {
     return "Unknown";
   }
