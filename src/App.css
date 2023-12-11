@@ -4,3 +4,36 @@
   padding: 2rem;
   text-align: center;
 }
+
+.info p {
+  @apply my-4
+}
+
+.info ol {
+  @apply px-12
+}
+
+.info ol li {
+  @apply my-3
+}
+
+/* Custom Slider Styles */
+.slider::-webkit-slider-thumb {
+  @apply w-4 h-8 bg-blue-500 rounded-full border border-blue-400 shadow appearance-none cursor-pointer;
+  -webkit-appearance: none;
+  margin-top: -0.7rem
+}
+
+.slider::-moz-range-thumb {
+  @apply w-6 h-6 bg-blue-500 rounded-full border border-blue-400 shadow appearance-none cursor-pointer;
+}
+
+.slider::-webkit-slider-runnable-track {
+  @apply h-2 bg-gray-200 rounded-lg;
+}
+
+.slider::-moz-range-track {
+  @apply h-2 bg-gray-200 rounded-lg;
+}
+
+/* You can add more styles for hover, focus, and active states */
