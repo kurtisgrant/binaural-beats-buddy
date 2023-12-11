@@ -57,69 +57,46 @@ function App() {
       </div>
       <div className="info my-12">
         <p>
-          Binaural beats are an auditory illusion perceived when two different
-          pure-tone sine waves, both with frequencies lower than 1500 Hz, with
-          less than a 40 Hz difference between them, are presented to a listener
-          dichotically, meaning one through each ear. For example, if a 200 Hz
-          tone is played in one ear and a 310 Hz tone in the other, the brain
-          perceives a third tone based on the mathematical difference between
-          these two tones, in this case, 10 Hz. This effect is believed to
-          emerge in the superior olivary complex of the brainstem as the brain
-          processes the two different frequencies.
+        Quickly dive into a personalized sound environment with Binaural Beats Buddy, leveraging the subtle science of binaural beats. By emitting two slightly different low-frequency tones, one to each ear, your brain perceives a consistent tone—the binaural beat. While the base frequency can be adjusted to your auditory preference up to 800 Hz, it's the beat frequency, ranging from 1 Hz to 50 Hz, that's crucial for steering your brain into your desired mental state.
         </p>
 
         <p>
-          The use of binaural beats spans various purposes, primarily focused on
-          creating states of relaxation, meditation, stress reduction, pain
-          management, improved sleep, and even promoting creativity. They are
-          categorized based on their frequency ranges and are ascribed different
-          mental states or outcomes:
+        The beat frequency should be selected based on the cognitive or relaxation state you aim to achieve:
         </p>
 
         <ol>
           <li>
             <b>Delta (1-4 Hz)</b>
             <br />
-            These frequencies are associated with deep sleep and are said to aid
-            in healing and regeneration. They are often used in meditation and
-            relaxation techniques to promote deep sleep.
+            Deep sleep and restorative rest
           </li>
 
           <li>
             <b>Theta (4-8 Hz)</b>
             <br />
-            Linked with REM sleep, deep meditation, and creativity, theta beats
-            are used to encourage relaxation and creativity. They are also
-            associated with memory, learning, and intuition.
+            Meditation, intuition, and memory enhancement
           </li>
 
           <li>
             <b>Alpha (8-14 Hz)</b>
             <br />
-            These frequencies are thought to promote relaxation while awake,
-            such as during meditation and light hypnosis. They are also
-            associated with pre-sleep and pre-wake drowsiness.
+            Light relaxation and pre-sleep calmness
           </li>
 
           <li>
             <b>Beta (14-30 Hz)</b>
             <br />
-            Associated with normal waking consciousness and a heightened state
-            of alertness, logic, and critical reasoning. These are often used
-            for active concentration or problem-solving tasks.
+            Active, engaged thinking and focus
           </li>
 
           <li>
             <b>Gamma (30-50 Hz)</b>
             <br />
-            These are the fastest binaural beats and are associated with peak
-            concentration and high levels of cognitive functioning.
-            Neuroscientists believe they are involved in higher mental activity,
-            including perception and consciousness.
+            Enhanced perception and problem-solving abilities
           </li>
         </ol>
 
-        <p>
+        <p className="py-12">
           It is important to note that while many users anecdotally report
           positive effects of binaural beats on mental states, scientific
           research on their effectiveness is mixed and continues to evolve.
