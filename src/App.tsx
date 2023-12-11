@@ -2,8 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import "./App.css";
 
 function App() {
-  const [hz, setHz] = useState(200);
-  const [delta, setDelta] = useState(30);
+  const [base, setBase] = useState(200);
+  const [beat, setBeat] = useState(30);
   const [isPlaying, setIsPlaying] = useState(false);
 
   const audioCtxRef = useRef<AudioContext | null>(null);
@@ -55,11 +55,11 @@ function App() {
 
       // Set initial frequencies
       oscillatorLeft.frequency.setValueAtTime(
-        hz,
+        base,
         audioCtxRef.current.currentTime
       );
       oscillatorRight.frequency.setValueAtTime(
-        hz + delta,
+        base + beat,
         audioCtxRef.current.currentTime
       );
 
@@ -80,7 +80,7 @@ function App() {
         oscillatorRight.disconnect();
       };
     }
-  }, [isPlaying, hz, delta]);
+  }, [isPlaying, base, beat]);
 
   return (
     <>
@@ -93,37 +93,37 @@ function App() {
       </button>
       <div className="pt-5">
         <div>
-          <label htmlFor="hz">Base: {hz} Hz</label>
+          <label htmlFor="base">Base: {base} Hz</label>
           <br />
           <input
             type="range"
-            id="hz"
-            name="hz"
+            id="base"
+            name="base"
             min="50"
             max="800"
-            value={hz}
-            onChange={(e) => setHz(Number(e.target.value))}
+            value={base}
+            onChange={(e) => setBase(Number(e.target.value))}
             className="slider p-7 m-4 w-64 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
           />
         </div>
         <div>
-          <label htmlFor="delta">Beat: {delta} Hz</label>
+          <label htmlFor="beat">Beat: {beat} Hz</label>{' (' + getToneType(beat) + ')'}
           <br />
           <input
             type="range"
-            id="delta"
-            name="delta"
+            id="beat"
+            name="beat"
             min="0"
-            max="60"
-            value={delta}
-            onChange={(e) => setDelta(Number(e.target.value))}
+            max="50"
+            value={beat}
+            onChange={(e) => setBeat(Number(e.target.value))}
             className="slider p-7 m-4 w-64 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
           />
         </div>
       </div>
       <div>
         <small>
-          {hz} Hz (Left) | {hz + delta} Hz (Right)
+          {base} Hz (Left) | {base + beat} Hz (Right)
         </small>
       </div>
       <div className="info my-12">
@@ -131,7 +131,7 @@ function App() {
           Binaural beats are an auditory illusion perceived when two different
           pure-tone sine waves, both with frequencies lower than 1500 Hz, with
           less than a 40 Hz difference between them, are presented to a listener
-          dichotically, meaning one through each ear. For example, if a 300 Hz
+          dichotically, meaning one through each ear. For example, if a 200 Hz
           tone is played in one ear and a 310 Hz tone in the other, the brain
           perceives a third tone based on the mathematical difference between
           these two tones, in this case, 10 Hz. This effect is believed to
@@ -201,3 +201,21 @@ function App() {
 }
 
 export default App;
+
+function getToneType(hz) {
+  if (hz >= 30 && hz <= 50) {
+    return "Gamma";
+  } else if (hz >= 14 && hz <= 30) {
+    return "Beta";
+  } else if (hz >= 8 && hz <= 14) {
+    return "Alpha";
+  } else if (hz >= 4 && hz <= 8) {
+    return "Theta";
+  } else if (hz >= 1 && hz <= 4) {
+    return "Delta";
+  } else if (hz <= 0) {
+    return "Not Binaural"
+  } else {
+    return "Unknown";
+  }
+}
