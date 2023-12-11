@@ -1,4 +1,6 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
+import { useAudioContext } from "./hooks/useAudioContext";
+import { useOscillator } from "./hooks/useOscillator";
 import "./App.css";
 
 function App() {
@@ -6,81 +8,17 @@ function App() {
   const [beat, setBeat] = useState(30);
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const audioCtxRef = useRef<AudioContext | null>(null);
-  const gainNodeRef = useRef<GainNode | null>(null);
-  const oscillatorLeftRef = useRef<OscillatorNode | null>(null);
-  const oscillatorRightRef = useRef<OscillatorNode | null>(null);
-  const pannerLeftRef = useRef<StereoPannerNode | null>(null);
-  const pannerRightRef = useRef<StereoPannerNode | null>(null);
+  const {audioCtxRef, getAudioContext} = useAudioContext();
+  useOscillator(getAudioContext, isPlaying, base, beat);
 
   const handlePlayPause = () => {
-    // Lazily create the AudioContext on user interaction
+    // // Lazily create the AudioContext on user interaction
     if (!audioCtxRef.current) {
       audioCtxRef.current = new window.AudioContext();
     }
 
-    // Resume the AudioContext if it's in a suspended state
-    if (audioCtxRef.current.state === "suspended") {
-      audioCtxRef.current.resume();
-    }
-
     setIsPlaying(!isPlaying);
   };
-
-  // Handling oscillator lifecycle
-  useEffect(() => {
-    if (audioCtxRef.current && isPlaying) {
-      if (!gainNodeRef.current) {
-        gainNodeRef.current = audioCtxRef.current.createGain();
-        gainNodeRef.current.gain.value = 0.15;
-      }
-
-      // Create and configure oscillators and panners
-      const oscillatorLeft = audioCtxRef.current.createOscillator();
-      const oscillatorRight = audioCtxRef.current.createOscillator();
-      const pannerLeft = audioCtxRef.current.createStereoPanner();
-      const pannerRight = audioCtxRef.current.createStereoPanner();
-
-      pannerLeft.pan.value = -1;
-      pannerRight.pan.value = 1;
-
-      oscillatorLeft
-        .connect(pannerLeft)
-        .connect(gainNodeRef.current)
-        .connect(audioCtxRef.current.destination);
-      oscillatorRight
-        .connect(pannerRight)
-        .connect(gainNodeRef.current)
-        .connect(audioCtxRef.current.destination);
-
-      // Set initial frequencies
-      oscillatorLeft.frequency.setValueAtTime(
-        base,
-        audioCtxRef.current.currentTime
-      );
-      oscillatorRight.frequency.setValueAtTime(
-        base + beat,
-        audioCtxRef.current.currentTime
-      );
-
-      // Start oscillators
-      oscillatorLeft.start();
-      oscillatorRight.start();
-
-      // Assign refs for later use in frequency update
-      oscillatorLeftRef.current = oscillatorLeft;
-      oscillatorRightRef.current = oscillatorRight;
-      pannerLeftRef.current = pannerLeft;
-      pannerRightRef.current = pannerRight;
-
-      return () => {
-        oscillatorLeft.stop();
-        oscillatorRight.stop();
-        oscillatorLeft.disconnect();
-        oscillatorRight.disconnect();
-      };
-    }
-  }, [isPlaying, base, beat]);
 
   return (
     <>
@@ -202,7 +140,7 @@ function App() {
 
 export default App;
 
-function getToneType(hz) {
+function getToneType(hz: number) {
   if (hz >= 30 && hz <= 50) {
     return "Gamma";
   } else if (hz >= 14 && hz <= 30) {
