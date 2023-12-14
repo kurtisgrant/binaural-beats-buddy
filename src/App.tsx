@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { useAudioContext } from "./hooks/useAudioContext";
 import { useOscillator } from "./hooks/useOscillator";
-import SliderWithButtons from "./components/sliderWithButtons";
+import SliderWithButtons from "./components/SliderWithButtons";
 import "./App.css";
 
 function App() {
   const [base, setBase] = useState(200);
   const [beat, setBeat] = useState(30);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [duration, setDuration] = useState(20);
+  const [downloadOpen, setDownloadOpen] = useState(false);
 
   const { audioCtxRef, getAudioContext } = useAudioContext();
   useOscillator(getAudioContext, isPlaying, base, beat);
@@ -20,51 +22,96 @@ function App() {
 
     setIsPlaying(!isPlaying);
   };
+  const handleDownload = () => {
+    // Add your download logic here
+  };
 
   return (
     <>
       <h1 className="text-5xl m-5 font-bold">Binaural Beats Buddy</h1>
-      <button
-        className="mx-auto p-5 my-8 rounded-full bg-blue-500 hover:bg-blue-400 text-white text-2xl font-bold"
-        onClick={handlePlayPause}
-      >
-        {isPlaying ? "Pause" : "Play"}
-      </button>
-      <div className="pt-5">
-        <SliderWithButtons
-          name="base"
-          value={base}
-          setValue={setBase}
-          labeller={baseLabeller}
-          min={50}
-          max={800}
-          buttonInc={5}
-        />
-        <SliderWithButtons
-          name="beat"
-          value={beat}
-          setValue={setBeat}
-          labeller={beatLabeller}
-          min={0}
-          max={50}
-          buttonInc={1}
-        />
+      <div className="md:flex md:justify-around align-middle p-2 border-red-900 border-solid">
+        <div className="flex flex-col items-center justify-around p-2 px-12 border-green-900">
+          <button
+            className="h-36 w-36 mx-auto p-10 rounded-full bg-blue-500 hover:bg-blue-400 text-white text-5xl font-bold"
+            onClick={handlePlayPause}
+          >
+            {isPlaying ? "𑫨" : "▷"}
+          </button>
+        </div>
+        <div className="p-2 pt-8 border-orange-900">
+          <SliderWithButtons
+            name="base"
+            value={base}
+            setValue={setBase}
+            labeller={baseLabeller}
+            min={50}
+            max={800}
+            buttonInc={5}
+          />
+          <SliderWithButtons
+            name="beat"
+            value={beat}
+            setValue={setBeat}
+            labeller={beatLabeller}
+            min={0}
+            max={50}
+            buttonInc={1}
+          />
+          <small>
+            {base} Hz (Left) | {base + beat} Hz (Right)
+          </small>
+        </div>
       </div>
       <div>
-        <small>
-          {base} Hz (Left) | {base + beat} Hz (Right)
-        </small>
+        <button
+          style={{ backgroundColor: "#242424" }}
+          className="text-blue-300 italic mt-3 px-3 hover:text-blue-400 hover:font-bold"
+          onClick={() => setDownloadOpen(!downloadOpen)}
+        >
+          {downloadOpen ? "▼" : "▶︎"} Download as MP3
+        </button>
+        <div className={`accordian ${downloadOpen && "accordian-open"}`}>
+          <div className="overflow-hidden">
+            <div className="md:flex md:justify-around md:items-center p-2 py-3 border border-dashed border-gray-500 rounded-xl">
+              <SliderWithButtons
+                name="duration"
+                value={duration}
+                setValue={setDuration}
+                labeller={durationLabeller}
+                min={5}
+                max={180}
+                buttonInc={5}
+              />
+              <button
+                className="h-10 bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
+                onClick={handleDownload}
+              >
+                Download MP3
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
-      <div className="info my-12">
+      <div className="info my-8">
         <p>
-        Binaural Beats Buddy offers a unique auditory journey, where a simple adjustment of frequencies can lead to profound changes in mental states. While the base frequency is a matter of personal taste and has no specific psychological effect, the beat frequency is the key to unlocking different brainwave patterns. Here's how it works in more relatable terms:
+          Binaural Beats Buddy offers a unique auditory journey, where a simple
+          adjustment of frequencies can lead to profound changes in mental
+          states. While the base frequency is a matter of personal taste and has
+          no specific psychological effect, the beat frequency is the key to
+          unlocking different brainwave patterns. Here's how it works in more
+          relatable terms:
         </p>
         <p>
-        Your brain operates at various frequencies depending on what you're doing or feeling. These frequencies are like the rhythm of your brain's activity. When you listen to a binaural beat at a specific frequency, your brain tends to match or "sync" its own rhythm with that frequency, a phenomenon known as 'brainwave entrainment'.
+          Your brain operates at various frequencies depending on what you're
+          doing or feeling. These frequencies are like the rhythm of your
+          brain's activity. When you listen to a binaural beat at a specific
+          frequency, your brain tends to match or "sync" its own rhythm with
+          that frequency, a phenomenon known as 'brainwave entrainment'.
         </p>
 
         <p>
-        Each beat frequency range is like a tuning dial for your mood and mental state:
+          Each beat frequency range is like a tuning dial for your mood and
+          mental state:
         </p>
 
         <ol>
@@ -121,6 +168,17 @@ function baseLabeller(name: string, value: number) {
 
 function beatLabeller(name: string, value: number) {
   return `${capitalize(name)}: ${value} Hz (${getToneType(value)})`;
+}
+
+function durationLabeller(name: string, mins: number) {
+  if (mins >= 60) {
+    const hours = Math.floor(mins / 60);
+    const remainingMins = mins % 60;
+    const hourLabel = hours > 1 ? "hours" : "hour";
+    return `${capitalize(name)}: ${hours} ${hourLabel}, ${remainingMins} mins`;
+  } else {
+    return `${capitalize(name)}: ${mins} mins`;
+  }
 }
 
 function capitalize(word: string) {

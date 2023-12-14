@@ -48,7 +48,7 @@ export default function SliderWithButtons({
           max={max.toString()}
           value={value}
           onChange={handleSlider}
-          className="slider p-7 mx-2 w-64 h-2 rounded-lg appearance-none cursor-pointer bg-gray-700"
+          className="slider p-7 mx-2 w-48 md:w-64 h-2 rounded-lg appearance-none cursor-pointer bg-gray-700"
         />
         <button
           style={{ 

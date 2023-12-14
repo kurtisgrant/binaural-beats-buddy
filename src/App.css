@@ -1,7 +1,7 @@
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1rem;
   text-align: center;
 }
 
@@ -38,6 +38,16 @@
 
 .slider::-moz-range-track {
   @apply h-2 bg-gray-200 rounded-lg;
+}
+
+.accordian {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 500ms ease-in-out
+}
+
+.accordian.accordian-open {
+  grid-template-rows: 1fr;
 }
 
 /* You can add more styles for hover, focus, and active states */
