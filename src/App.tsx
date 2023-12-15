@@ -43,7 +43,7 @@ function App() {
             className="absolute h-48 -top-16 md:-left-12 pr-40 md:pr-0 pointer-events-none"
           />
           <button
-            className="h-36 w-36 mx-auto p-10 rounded-full bg-blue-500 hover:bg-blue-400 text-white text-5xl font-bold"
+            className="h-36 w-36 mx-auto p-10 rounded-full bg-blue-500 hover:bg-blue-400 shadow-2xl"
             onClick={handlePlayPause}
           >
             {isPlaying ? <img src={pause} className="svg-icon" alt="Pause Icon" /> : <img src={play} className="svg-icon" alt="Play Icon" />}
