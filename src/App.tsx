@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useAudioContext } from "./hooks/useAudioContext";
 import { useOscillator } from "./hooks/useOscillator";
 import SliderWithButtons from "./components/SliderWithButtons";
+import Accordian from "./components/Accordian";
 import "./App.css";
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [duration, setDuration] = useState(20);
   const [downloadOpen, setDownloadOpen] = useState(false);
+  const [aboutOpen, setAboutOpen] = useState(true);
 
   const { audioCtxRef, getAudioContext } = useAudioContext();
   useOscillator(getAudioContext, isPlaying, base, beat);
@@ -63,98 +65,94 @@ function App() {
         </div>
       </div>
       <div>
-        <button
-          style={{ backgroundColor: "#242424" }}
-          className="text-blue-300 italic mt-3 px-3 hover:text-blue-400 hover:font-bold"
-          onClick={() => setDownloadOpen(!downloadOpen)}
+        <Accordian
+          open={downloadOpen}
+          setOpen={setDownloadOpen}
+          headerButtonText="Download as MP3"
         >
-          {downloadOpen ? "▼" : "▶︎"} Download as MP3
-        </button>
-        <div className={`accordian ${downloadOpen && "accordian-open"}`}>
-          <div className="overflow-hidden">
-            <div className="md:flex md:justify-around md:items-center p-2 py-3 border border-dashed border-gray-500 rounded-xl">
-              <SliderWithButtons
-                name="duration"
-                value={duration}
-                setValue={setDuration}
-                labeller={durationLabeller}
-                min={5}
-                max={180}
-                buttonInc={5}
-              />
-              <button
-                className="h-10 bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
-                onClick={handleDownload}
-              >
-                Download MP3
-              </button>
-            </div>
+          <SliderWithButtons
+            name="duration"
+            value={duration}
+            setValue={setDuration}
+            labeller={durationLabeller}
+            min={5}
+            max={180}
+            buttonInc={5}
+          />
+          <button
+            className="h-10 bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
+            onClick={handleDownload}
+          >
+            Download MP3
+          </button>
+        </Accordian>
+        <Accordian open={aboutOpen} setOpen={setAboutOpen} headerButtonText="About">
+          <div className="info my-8">
+            <p>
+              Binaural Beats Buddy offers a unique auditory journey, where a
+              simple adjustment of frequencies can lead to profound changes in
+              mental states. While the base frequency is a matter of personal
+              taste and has no specific psychological effect, the beat frequency
+              is the key to unlocking different brainwave patterns. Here's how
+              it works in more relatable terms:
+            </p>
+            <p>
+              Your brain operates at various frequencies depending on what
+              you're doing or feeling. These frequencies are like the rhythm of
+              your brain's activity. When you listen to a binaural beat at a
+              specific frequency, your brain tends to match or "sync" its own
+              rhythm with that frequency, a phenomenon known as 'brainwave
+              entrainment'.
+            </p>
+
+            <p>
+              Each beat frequency range is like a tuning dial for your mood and
+              mental state:
+            </p>
+
+            <ol>
+              <li>
+                <b>Delta (1-4 Hz)</b>
+                <br />
+                Deep sleep and restorative rest
+              </li>
+
+              <li>
+                <b>Theta (4-8 Hz)</b>
+                <br />
+                Meditation, intuition, and memory enhancement
+              </li>
+
+              <li>
+                <b>Alpha (8-14 Hz)</b>
+                <br />
+                Light relaxation and pre-sleep calmness
+              </li>
+
+              <li>
+                <b>Beta (14-30 Hz)</b>
+                <br />
+                Active, engaged thinking and focus
+              </li>
+
+              <li>
+                <b>Gamma (30-50 Hz)</b>
+                <br />
+                Enhanced perception and problem-solving abilities
+              </li>
+            </ol>
+
+            <p className="py-12">
+              It is important to note that while many users anecdotally report
+              positive effects of binaural beats on mental states, scientific
+              research on their effectiveness is mixed and continues to evolve.
+              Their use as a therapeutic tool is not universally accepted in the
+              scientific community, and they are not a replacement for medical
+              treatment. However, they are widely used as a non-invasive and
+              drug-free method for inducing a desired mental state.
+            </p>
           </div>
-        </div>
-      </div>
-      <div className="info my-8">
-        <p>
-          Binaural Beats Buddy offers a unique auditory journey, where a simple
-          adjustment of frequencies can lead to profound changes in mental
-          states. While the base frequency is a matter of personal taste and has
-          no specific psychological effect, the beat frequency is the key to
-          unlocking different brainwave patterns. Here's how it works in more
-          relatable terms:
-        </p>
-        <p>
-          Your brain operates at various frequencies depending on what you're
-          doing or feeling. These frequencies are like the rhythm of your
-          brain's activity. When you listen to a binaural beat at a specific
-          frequency, your brain tends to match or "sync" its own rhythm with
-          that frequency, a phenomenon known as 'brainwave entrainment'.
-        </p>
-
-        <p>
-          Each beat frequency range is like a tuning dial for your mood and
-          mental state:
-        </p>
-
-        <ol>
-          <li>
-            <b>Delta (1-4 Hz)</b>
-            <br />
-            Deep sleep and restorative rest
-          </li>
-
-          <li>
-            <b>Theta (4-8 Hz)</b>
-            <br />
-            Meditation, intuition, and memory enhancement
-          </li>
-
-          <li>
-            <b>Alpha (8-14 Hz)</b>
-            <br />
-            Light relaxation and pre-sleep calmness
-          </li>
-
-          <li>
-            <b>Beta (14-30 Hz)</b>
-            <br />
-            Active, engaged thinking and focus
-          </li>
-
-          <li>
-            <b>Gamma (30-50 Hz)</b>
-            <br />
-            Enhanced perception and problem-solving abilities
-          </li>
-        </ol>
-
-        <p className="py-12">
-          It is important to note that while many users anecdotally report
-          positive effects of binaural beats on mental states, scientific
-          research on their effectiveness is mixed and continues to evolve.
-          Their use as a therapeutic tool is not universally accepted in the
-          scientific community, and they are not a replacement for medical
-          treatment. However, they are widely used as a non-invasive and
-          drug-free method for inducing a desired mental state.
-        </p>
+        </Accordian>
       </div>
     </>
   );
