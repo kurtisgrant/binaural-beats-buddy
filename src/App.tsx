@@ -3,6 +3,7 @@ import { useAudioContext } from "./hooks/useAudioContext";
 import { useOscillator } from "./hooks/useOscillator";
 import SliderWithButtons from "./components/SliderWithButtons";
 import Accordian from "./components/Accordian";
+import img from "./assets/dontforget.png";
 import "./App.css";
 
 function App() {
@@ -30,9 +31,14 @@ function App() {
 
   return (
     <>
-      <h1 className="text-5xl m-5 font-bold">Binaural Beats Buddy</h1>
+      <h1 className="text-5xl text-white m-5 mb-7 font-bold">Binaural Beats Buddy</h1>
       <div className="md:flex md:justify-around align-middle p-2 border-red-900 border-solid">
-        <div className="flex flex-col items-center justify-around p-2 px-12 border-green-900">
+        <div className="relative flex flex-col items-center justify-around p-2 px-12 border-green-900">
+          <img
+            src={img}
+            alt="Don't forget headphones sticker graphic"
+            className="absolute h-48 -top-20 pr-48 pointer-events-none"
+          />
           <button
             className="h-36 w-36 mx-auto p-10 rounded-full bg-blue-500 hover:bg-blue-400 text-white text-5xl font-bold"
             onClick={handlePlayPause}
@@ -86,8 +92,12 @@ function App() {
             Download MP3
           </button>
         </Accordian>
-        <Accordian open={aboutOpen} setOpen={setAboutOpen} headerButtonText="About">
-          <div className="info my-8">
+        <Accordian
+          open={aboutOpen}
+          setOpen={setAboutOpen}
+          headerButtonText="About"
+        >
+          <div className="info m-3">
             <p>
               Binaural Beats Buddy offers a unique auditory journey, where a
               simple adjustment of frequencies can lead to profound changes in
