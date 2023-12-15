@@ -40,7 +40,7 @@ function App() {
           <img
             src={img}
             alt="Don't forget headphones sticker graphic"
-            className="absolute h-48 -top-20 pr-48 pointer-events-none"
+            className="absolute h-48 -top-16 md:-left-12 pr-40 md:pr-0 pointer-events-none"
           />
           <button
             className="h-36 w-36 mx-auto p-10 rounded-full bg-blue-500 hover:bg-blue-400 text-white text-5xl font-bold"
