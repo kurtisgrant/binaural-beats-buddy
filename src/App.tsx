@@ -34,20 +34,28 @@ function App() {
 
   return (
     <>
-      <h1 className="text-5xl text-white m-5 mb-7 font-bold">Binaural Beats Buddy</h1>
+      <h1 className="text-5xl text-white m-5 mb-7 font-bold">
+        Binaural Beats Buddy
+      </h1>
       <div className="md:flex md:justify-around align-middle p-2 border-red-900 border-solid">
-        <div className="relative flex flex-col items-center justify-around p-2 px-12 border-green-900">
-          <img
-            src={img}
-            alt="Don't forget headphones sticker graphic"
-            className="absolute h-48 -top-16 md:-left-12 pr-40 md:pr-0 pointer-events-none"
-          />
-          <button
-            className="h-36 w-36 mx-auto p-10 rounded-full bg-blue-500 hover:bg-blue-400 shadow-2xl"
-            onClick={handlePlayPause}
-          >
-            {isPlaying ? <img src={pause} className="svg-icon" alt="Pause Icon" /> : <img src={play} className="svg-icon" alt="Play Icon" />}
-          </button>
+        <div className="flex flex-col items-center justify-around p-2 px-12 border border-green-900">
+          <div className="relative border border-teal-500">
+            <img
+              src={img}
+              alt="Don't forget headphones sticker graphic"
+              className="absolute h-48 object-cover -top-24 mt-3 -left-20 pointer-events-none"
+            />
+            <button
+              className="h-36 w-36 mx-auto p-10 rounded-full bg-blue-500 hover:bg-blue-400 shadow-2xl"
+              onClick={handlePlayPause}
+            >
+              {isPlaying ? (
+                <img src={pause} className="svg-icon" alt="Pause Icon" />
+              ) : (
+                <img src={play} className="svg-icon" alt="Play Icon" />
+              )}
+            </button>
+          </div>
         </div>
         <div className="p-2 pt-8 border-orange-900">
           <SliderWithButtons
