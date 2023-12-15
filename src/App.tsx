@@ -37,9 +37,9 @@ function App() {
       <h1 className="text-5xl text-white m-5 mb-7 font-bold">
         Binaural Beats Buddy
       </h1>
-      <div className="md:flex md:justify-around align-middle p-2 border-red-900 border-solid">
-        <div className="flex flex-col items-center justify-around p-2 px-12 border border-green-900">
-          <div className="relative border border-teal-500">
+      <div className="md:flex md:justify-around align-middle p-2">
+        <div className="flex flex-col items-center justify-around p-2 px-12">
+          <div className="relative">
             <img
               src={img}
               alt="Don't forget headphones sticker graphic"
