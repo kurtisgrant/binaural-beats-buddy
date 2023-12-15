@@ -6,6 +6,10 @@
   text-align: center;
 }
 
+.svg-icon {
+  fill: white;
+}
+
 .info p {
   @apply my-3
 }

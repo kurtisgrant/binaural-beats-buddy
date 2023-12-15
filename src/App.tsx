@@ -4,6 +4,9 @@ import { useOscillator } from "./hooks/useOscillator";
 import SliderWithButtons from "./components/SliderWithButtons";
 import Accordian from "./components/Accordian";
 import img from "./assets/dontforget.png";
+import pause from "./assets/pause.svg";
+import play from "./assets/play.svg";
+
 import "./App.css";
 
 function App() {
@@ -43,7 +46,7 @@ function App() {
             className="h-36 w-36 mx-auto p-10 rounded-full bg-blue-500 hover:bg-blue-400 text-white text-5xl font-bold"
             onClick={handlePlayPause}
           >
-            {isPlaying ? "𑫨" : "▷"}
+            {isPlaying ? <img src={pause} className="svg-icon" alt="Pause Icon" /> : <img src={play} className="svg-icon" alt="Play Icon" />}
           </button>
         </div>
         <div className="p-2 pt-8 border-orange-900">
