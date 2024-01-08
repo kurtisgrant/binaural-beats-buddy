@@ -9,67 +9,62 @@ export function useOscillator(
   const gainNodeRef = useRef<GainNode | null>(null);
   const oscillatorLeftRef = useRef<OscillatorNode | null>(null);
   const oscillatorRightRef = useRef<OscillatorNode | null>(null);
-  const pannerLeftRef = useRef<StereoPannerNode | null>(null);
-  const pannerRightRef = useRef<StereoPannerNode | null>(null);
 
   useEffect(() => {
     const audioCtx = getAudioContext();
 
-    if (audioCtx && isPlaying) {
+    if (audioCtx) {
       if (!gainNodeRef.current) {
         gainNodeRef.current = audioCtx.createGain();
         gainNodeRef.current.gain.value = 0.15;
       }
 
-      // Create and configure oscillators and panners
-      const oscillatorLeft = audioCtx.createOscillator();
-      const oscillatorRight = audioCtx.createOscillator();
-      const pannerLeft = audioCtx.createStereoPanner();
-      const pannerRight = audioCtx.createStereoPanner();
+      // Create and configure oscillators and panners only if they don't exist
+      if (!oscillatorLeftRef.current) {
+        const pannerLeft = audioCtx.createStereoPanner();
+        pannerLeft.pan.value = -1;
+        oscillatorLeftRef.current = audioCtx.createOscillator();
+        oscillatorLeftRef.current
+          .connect(pannerLeft)
+          .connect(audioCtx.createStereoPanner())
+          .connect(gainNodeRef.current)
+          .connect(audioCtx.destination);
+        oscillatorLeftRef.current.start();
+      }
 
-      pannerLeft.pan.value = -1;
-      pannerRight.pan.value = 1;
-
-      oscillatorLeft
-        .connect(pannerLeft)
-        .connect(gainNodeRef.current)
-        .connect(audioCtx.destination);
-      oscillatorRight
-        .connect(pannerRight)
-        .connect(gainNodeRef.current)
-        .connect(audioCtx.destination);
+      if (!oscillatorRightRef.current) {
+        const pannerRight = audioCtx.createStereoPanner();
+        pannerRight.pan.value = 1;
+        oscillatorRightRef.current = audioCtx.createOscillator();
+        oscillatorRightRef.current
+          .connect(pannerRight)
+          .connect(audioCtx.createStereoPanner())
+          .connect(gainNodeRef.current)
+          .connect(audioCtx.destination);
+        oscillatorRightRef.current.start();
+      }
 
       // Set initial frequencies
-      oscillatorLeft.frequency.setValueAtTime(base, audioCtx.currentTime);
-      oscillatorRight.frequency.setValueAtTime(
+      oscillatorLeftRef.current.frequency.setValueAtTime(
+        base,
+        audioCtx.currentTime
+      );
+      oscillatorRightRef.current.frequency.setValueAtTime(
         base + beat,
         audioCtx.currentTime
       );
 
-      // Start oscillators
-      oscillatorLeft.start();
-      oscillatorRight.start();
-
-      // Assign refs for later use in frequency update
-      oscillatorLeftRef.current = oscillatorLeft;
-      oscillatorRightRef.current = oscillatorRight;
-      pannerLeftRef.current = pannerLeft;
-      pannerRightRef.current = pannerRight;
-
-      return () => {
-        oscillatorLeft.stop();
-        oscillatorRight.stop();
-        oscillatorLeft.disconnect();
-        oscillatorRight.disconnect();
-      };
+      // Stop oscillators when isPlaying is false
+      if (!isPlaying) {
+        oscillatorLeftRef.current.stop();
+        oscillatorRightRef.current.stop();
+        oscillatorLeftRef.current.disconnect();
+        oscillatorRightRef.current.disconnect();
+        oscillatorLeftRef.current = null;
+        oscillatorRightRef.current = null;
+      }
     }
   }, [getAudioContext, isPlaying, base, beat]);
 
-  return {
-    gainNodeRef,
-    oscillatorLeftRef,
-    oscillatorRightRef,
-    pannerLeftRef,
-    pannerRightRef,
-  };
+  return;
 }
