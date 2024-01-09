@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useAudioContext } from "./hooks/useAudioContext";
 import { useOscillator } from "./hooks/useOscillator";
 import SliderWithButtons from "./components/SliderWithButtons";
 import Accordian from "./components/Accordian";
@@ -8,6 +7,7 @@ import pause from "./assets/pause.svg";
 import play from "./assets/play.svg";
 
 import "./App.css";
+import DownloadButton from "./components/DownloadButton";
 
 function App() {
   const [base, setBase] = useState(200);
@@ -16,20 +16,19 @@ function App() {
   const [duration, setDuration] = useState(20);
   const [downloadOpen, setDownloadOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(true);
+  const [audioCtx, setAudioCtx] = useState<AudioContext | null>(null);
 
-  const { audioCtxRef, getAudioContext } = useAudioContext();
-  useOscillator(getAudioContext, isPlaying, base, beat);
+  useOscillator(audioCtx, isPlaying, base, beat);
+
+  const initAudioCtx = () => {
+    if (!audioCtx) {
+      setAudioCtx(new window.AudioContext());
+    }
+  };
 
   const handlePlayPause = () => {
-    // // Lazily create the AudioContext on user interaction
-    if (!audioCtxRef.current) {
-      audioCtxRef.current = new window.AudioContext();
-    }
-
+    initAudioCtx();
     setIsPlaying(!isPlaying);
-  };
-  const handleDownload = () => {
-    // Add your download logic here
   };
 
   return (
@@ -85,7 +84,7 @@ function App() {
         <Accordian
           open={downloadOpen}
           setOpen={setDownloadOpen}
-          headerButtonText="Download as MP3"
+          headerButtonText="Download Audio"
         >
           <SliderWithButtons
             name="duration"
@@ -96,12 +95,12 @@ function App() {
             max={180}
             buttonInc={5}
           />
-          <button
-            className="h-10 bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
-            onClick={handleDownload}
-          >
-            Download MP3
-          </button>
+          <DownloadButton
+            audioCtx={audioCtx}
+            duration={duration}
+            base={base}
+            beat={beat}
+          />
         </Accordian>
         <Accordian
           open={aboutOpen}

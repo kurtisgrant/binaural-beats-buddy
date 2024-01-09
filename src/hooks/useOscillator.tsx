@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 
 export function useOscillator(
-  getAudioContext: () => AudioContext | null,
+  audioCtx: AudioContext | null,
   isPlaying: boolean,
   base: number,
   beat: number
@@ -11,8 +11,6 @@ export function useOscillator(
   const oscillatorRightRef = useRef<OscillatorNode | null>(null);
 
   useEffect(() => {
-    const audioCtx = getAudioContext();
-
     if (audioCtx) {
       if (!gainNodeRef.current) {
         gainNodeRef.current = audioCtx.createGain();
@@ -64,7 +62,7 @@ export function useOscillator(
         oscillatorRightRef.current = null;
       }
     }
-  }, [getAudioContext, isPlaying, base, beat]);
+  }, [audioCtx, isPlaying, base, beat]);
 
   return;
 }
