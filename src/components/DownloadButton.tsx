@@ -78,7 +78,7 @@ export default function DownloadButton({
         const url = window.URL.createObjectURL(file);
         const link = document.createElement("a");
         link.href = url;
-        link.setAttribute("download", "audio.wav");
+        link.setAttribute("download", `binaural-${base}-${beat}.wav`);
         document.body.appendChild(link);
         link.click();
       }}
