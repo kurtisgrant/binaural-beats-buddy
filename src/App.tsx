@@ -92,7 +92,7 @@ function App() {
             setValue={setDuration}
             labeller={durationLabeller}
             min={5}
-            max={180}
+            max={90}
             buttonInc={5}
           />
           <DownloadButton
