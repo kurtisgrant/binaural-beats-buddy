@@ -95,12 +95,7 @@ function App() {
             max={90}
             buttonInc={5}
           />
-          <DownloadButton
-            audioCtx={audioCtx}
-            duration={duration}
-            base={base}
-            beat={beat}
-          />
+          <DownloadButton duration={duration} base={base} beat={beat} />
         </Accordian>
         <Accordian
           open={aboutOpen}

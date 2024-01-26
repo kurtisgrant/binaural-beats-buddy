@@ -3,14 +3,12 @@ import audioBufferToWav from "audiobuffer-to-wav";
 import { GAIN } from "../constants";
 
 interface DownloadButtonProps {
-  audioCtx: AudioContext | null;
   duration: number;
   base: number;
   beat: number;
 }
 
 export default function DownloadButton({
-  audioCtx,
   duration,
   base,
   beat,
@@ -21,14 +19,12 @@ export default function DownloadButton({
   useEffect(() => {
     setDownloadStarted(false);
     setFile(null);
-  }, [audioCtx, duration, base, beat]);
+  }, [duration, base, beat]);
 
   const handleRequestDownload = () => {
-    console.log("Preparing download...");
+    const audioCtx = new AudioContext();
     setDownloadStarted(true);
-    if (!audioCtx) {
-      return console.log("no audioctx for download");
-    }
+
     setTimeout(() => {
       const minutes = duration;
       const leftHz = base;
@@ -36,11 +32,8 @@ export default function DownloadButton({
       const gain = GAIN;
 
       const sampleRate = audioCtx.sampleRate || 44100;
-      console.log("sample rate: ", sampleRate);
       const frameCount = sampleRate * minutes * 60;
       const myArrayBuffer = audioCtx.createBuffer(2, frameCount, sampleRate);
-
-      console.log("check 1", myArrayBuffer);
 
       for (let channel = 0; channel < 2; channel++) {
         const nowBuffering = myArrayBuffer.getChannelData(channel);
@@ -51,48 +44,58 @@ export default function DownloadButton({
         }
       }
 
-      console.log("check 2", myArrayBuffer);
-
       const wav = audioBufferToWav(myArrayBuffer);
-
-      console.log("check 3", wav);
-
       const blob = new Blob([new DataView(wav)], { type: "audio/wav" });
-
-      console.log("check 4", blob);
 
       setFile(blob);
       setDownloadStarted(false);
     }, 1);
   };
 
-  return downloadStarted ? (
-    <button
-      className="h-10 bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
-      disabled
-    >
-      Generating...
-    </button>
-  ) : file ? (
-    <button
-      className="h-10 bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
-      onClick={() => {
-        const url = window.URL.createObjectURL(file);
-        const link = document.createElement("a");
-        link.href = url;
-        link.setAttribute("download", `binaural-${base}-${beat}.wav`);
-        document.body.appendChild(link);
-        link.click();
-      }}
-    >
-      Click to Download
-    </button>
-  ) : (
-    <button
-      className="h-10 bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
-      onClick={handleRequestDownload}
-    >
-      Download
-    </button>
+  return (
+    <>
+      {downloadStarted && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0, 0, 0, 0.2)",
+            zIndex: 10,
+          }}
+        />
+      )}
+      {downloadStarted ? (
+        <button
+          className="h-10 bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded z-50"
+          disabled
+        >
+          Generating...
+        </button>
+      ) : file ? (
+        <button
+          className="h-10 bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
+          onClick={() => {
+            const url = window.URL.createObjectURL(file);
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", `binaural-${base}-${beat}.wav`);
+            document.body.appendChild(link);
+            link.click();
+          }}
+        >
+          Click to Download
+        </button>
+      ) : (
+        <button
+          className="h-10 bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
+          onClick={handleRequestDownload}
+        >
+          Download
+        </button>
+      )}
+    </>
   );
 }
