@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { GAIN } from "../constants";
 
 export function useOscillator(
   audioCtx: AudioContext | null,
@@ -14,7 +15,7 @@ export function useOscillator(
     if (audioCtx) {
       if (!gainNodeRef.current) {
         gainNodeRef.current = audioCtx.createGain();
-        gainNodeRef.current.gain.value = 0.15;
+        gainNodeRef.current.gain.value = GAIN;
       }
 
       // Create and configure oscillators and panners only if they don't exist

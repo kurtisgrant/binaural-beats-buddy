@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import audioBufferToWav from "audiobuffer-to-wav";
+import { GAIN } from "../constants";
 
 interface DownloadButtonProps {
   audioCtx: AudioContext | null;
@@ -32,6 +33,7 @@ export default function DownloadButton({
       const minutes = duration;
       const leftHz = base;
       const rightHz = base + beat;
+      const gain = GAIN;
 
       const sampleRate = audioCtx.sampleRate || 44100;
       console.log("sample rate: ", sampleRate);
@@ -45,7 +47,7 @@ export default function DownloadButton({
         for (let i = 0; i < frameCount; i++) {
           const t = i / sampleRate;
           const freq = channel === 0 ? leftHz : rightHz;
-          nowBuffering[i] = Math.sin(freq * 2 * Math.PI * t);
+          nowBuffering[i] = gain * Math.sin(freq * 2 * Math.PI * t); // Apply gain to reduce volume
         }
       }
 
